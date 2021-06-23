@@ -1,4 +1,4 @@
 .idea
 venv
-**/rentabilidade/graphic/__pycache__/__init__.cpython-39.pyc
-**/rentabilidade/lib/__pycache__/__init__.cpython-39.pyc
+rentabilidade/graphic/__pycache__/__init__.cpython-39.pyc
+rentabilidade/lib/__pycache__/__init__.cpython-39.pyc
