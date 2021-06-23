@@ -1,2 +1,4 @@
 .idea
 venv
+**/rentabilidade/graphic/__pycache__
+**/rentabilidade/lib/__pycache__
