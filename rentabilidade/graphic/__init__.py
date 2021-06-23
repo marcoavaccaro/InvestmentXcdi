@@ -42,8 +42,17 @@ def tela():
     janela.close()
     return values
 
-#print(values)
+def telaSaida(txt):
+    frame_layout = [[sg.T(txt)]]
 
-#filePath = values['filePath']
-#CSV = lib.importar_csv(filePath)
-#print(CSV)
+    layout = [[sg.T('Seus Resultados Foram:')],
+             [sg.Frame('', frame_layout, font='Any 12', title_color='blue')],
+             [sg.Button('Sair', key='Sair')]]
+
+    while True:
+        janela = sg.Window('Teste', layout)
+        event, values = janela.Read()
+        if event == 'Sair':
+            break
+        janela.close()
+

@@ -24,6 +24,11 @@ for c in range(0, len(lista_de_aportes)):
     aportes = aportes+int(lista_de_aportes[c][1])
     valor_final = valor_final + lib.render_investimento(lista_de_aportes[c][1], lib.calcular_taxa_equivalente(listaDeJurosFiltrado))
 
-print(f'Com os seus investimentos que totalizaram R${aportes},00 desde {lista_de_aportes[0][0]}, hoje você teria R${valor_final:.2f} se tivesse investido no CDI.\n'
+texto = str(f'Com os seus investimentos que totalizaram R${aportes},00 desde {lista_de_aportes[0][0]}, hoje você teria R${valor_final:.2f} se tivesse investido no CDI.\n'
       f'Uma rentabilidade de R${valor_final-aportes:.2f} ou {(valor_final/aportes-1)*100:.3f}% no período')
+
+graphic.telaSaida(texto)
+
+#print(f'Com os seus investimentos que totalizaram R${aportes},00 desde {lista_de_aportes[0][0]}, hoje você teria R${valor_final:.2f} se tivesse investido no CDI.\n'
+#      f'Uma rentabilidade de R${valor_final-aportes:.2f} ou {(valor_final/aportes-1)*100:.3f}% no período')
 
