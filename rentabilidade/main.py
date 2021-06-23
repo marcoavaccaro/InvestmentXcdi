@@ -1,12 +1,13 @@
 import urllib.request
 import pandas as pd
 import lib
+import graphic
 
-#teste de commit
+
 link = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json"
-
-lista_de_aportes = lib.importar_csv()
-dias_uteis_periodo = lib.dias_uteis(lib.importar_csv())
+csvPath = graphic.tela()
+lista_de_aportes = lib.importar_csv(rf'{csvPath["filePath"]}')
+dias_uteis_periodo = lib.dias_uteis(lib.importar_csv(rf'{csvPath["filePath"]}'))
 
 
 f = urllib.request.urlopen(link)

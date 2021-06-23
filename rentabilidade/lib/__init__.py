@@ -4,8 +4,8 @@ import pandas as pd
 
 cal = Brd()
 
-def importar_csv():
-    arq = pd.read_csv(r'C:\Users\marco\PycharmProjects\calcular_dias_uteis\aportes.csv', index_col=False, header=None)
+def importar_csv(caminho):
+    arq = pd.read_csv(caminho, index_col=False, header=None)
     arqCSV = arq.to_dict()
     list1 = list()
     for c in range(0, len(arqCSV[0])):
