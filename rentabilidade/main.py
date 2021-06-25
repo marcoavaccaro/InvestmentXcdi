@@ -4,31 +4,71 @@ import lib
 import graphic
 
 
+
 link = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json"
-csvPath = graphic.tela()
-lista_de_aportes = lib.importar_csv(rf'{csvPath["filePath"]}')
-dias_uteis_periodo = lib.dias_uteis(lib.importar_csv(rf'{csvPath["filePath"]}'))
+def boraDale():
+    csvPath = graphic.tela()
+    print(csvPath)
+    print(len(csvPath))
+    if len(csvPath) == 1:
+        try:
+            lista_de_aportes = lib.importar_csv(rf'{csvPath["filePath"]}')
+            dias_uteis_periodo = lib.dias_uteis_csv(lib.importar_csv(rf'{csvPath["filePath"]}'))
+        except (FileNotFoundError):
+            print('Houve um problema ai')
+            return
+        #dias_uteis_periodo = lib.dias_uteis(lib.importar_csv(rf'{csvPath["filePath"]}'))
 
 
-f = urllib.request.urlopen(link)
-myfile = pd.read_json(f.read())
-tabela = lib.excluir_dias_irrelevantes(myfile, dias_uteis_periodo)
-lista_juros = lib.extrair_dict(tabela)
+        f = urllib.request.urlopen(link)
+        myfile = pd.read_json(f.read())
+        tabela = lib.excluir_dias_irrelevantes(myfile, dias_uteis_periodo)
+        lista_juros = lib.extrair_dict(tabela)
 
 
-aportes = 0
-valor_final = 0
-for c in range(0, len(lista_de_aportes)):
-    diasUteis = lib.dias_uteis(lista_de_aportes, c)
-    listaDeJurosFiltrado = lib.excluir_dias_lista(lista_juros, diasUteis)
-    aportes = aportes+int(lista_de_aportes[c][1])
-    valor_final = valor_final + lib.render_investimento(lista_de_aportes[c][1], lib.calcular_taxa_equivalente(listaDeJurosFiltrado))
+        aportes = 0
+        valor_final = 0
+        for c in range(0, len(lista_de_aportes)):
+            diasUteis = lib.dias_uteis_csv(lista_de_aportes, c)
+            listaDeJurosFiltrado = lib.excluir_dias_lista(lista_juros, diasUteis)
+            aportes = aportes+int(lista_de_aportes[c][1])
+            valor_final = valor_final + lib.render_investimento(lista_de_aportes[c][1], lib.calcular_taxa_equivalente(listaDeJurosFiltrado))
 
-texto = str(f'Com os seus investimentos que totalizaram R${aportes},00 desde {lista_de_aportes[0][0]}, hoje você teria R${valor_final:.2f} se tivesse investido no CDI.\n'
-      f'Uma rentabilidade de R${valor_final-aportes:.2f} ou {(valor_final/aportes-1)*100:.3f}% no período')
+        texto = str(f'Com os seus investimentos que totalizaram R${aportes},00 desde {lista_de_aportes[0][0]}, hoje você teria R${valor_final:.2f} se tivesse investido no CDI.\n'
+              f'Uma rentabilidade de R${valor_final-aportes:.2f} ou {(valor_final/aportes-1)*100:.3f}% no período')
 
-graphic.telaSaida(texto)
+        graphic.telaSaida(texto)
+    else:
+        print('Não foi inserido um CSV')
+        #for k, v in csvPath.items():
+        #    print(f'keys {k} value{v}')
+        lista = list()
+        for key, value in csvPath.items():
+            temp = [key, value]
+            lista.append(temp)
+        for c in range(0,len(lista)-1):
+            print(f'chave: {lista[c][1]} valor: {lista[c+1][1]}')
 
-#print(f'Com os seus investimentos que totalizaram R${aportes},00 desde {lista_de_aportes[0][0]}, hoje você teria R${valor_final:.2f} se tivesse investido no CDI.\n'
-#      f'Uma rentabilidade de R${valor_final-aportes:.2f} ou {(valor_final/aportes-1)*100:.3f}% no período')
+        print(lista)
+        f = urllib.request.urlopen(link)
+        myfile = pd.read_json(f.read())
+        dias_uteis_periodo = lib.filtro_dias(lista[1][1]) # CONTINUAR DAQUI
+        tabela = lib.excluir_dias_irrelevantes(myfile, dias_uteis_periodo)
+        lista_juros = lib.extrair_dict(tabela)
+
+        aportes = 0
+        valor_final = 0
+        for c in range(0, len(lista)):
+            diasUteis = lib.dias_uteis(lista, c)
+            if diasUteis == None:
+                continue
+            listaDeJurosFiltrado = lib.excluir_dias_lista(lista_juros, diasUteis)
+            aportes = aportes+int(lista[c+1][1])
+            valor_final = valor_final + lib.render_investimento(lista[c+1][1], lib.calcular_taxa_equivalente(listaDeJurosFiltrado))
+        texto = str(f'Com os seus investimentos que totalizaram R${aportes},00 desde {lista[1][1]}, hoje você teria R${valor_final:.2f} se tivesse investido no CDI.\n'
+                    f'Uma rentabilidade de R${valor_final - aportes:.2f} ou {(valor_final / aportes - 1) * 100:.3f}% no período')
+
+        graphic.telaSaida(texto)
+boraDale()
+
 

@@ -37,7 +37,7 @@ def tela():
         if event == 'escolha2':
             janela.extend_layout(janela, [[sg.T('Data'), sg.I(key=f'-IN-{i}-',size=(10,0)),sg.T('Aporte'),sg.I(key=f'-AP-{i}',size=(10,0))]])
             i += 1
-        if event == 'enviarDados2':
+        if event == 'enviarDados2' or event == 'enviarDados1':
             break
     janela.close()
     return values

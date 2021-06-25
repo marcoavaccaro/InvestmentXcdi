@@ -12,9 +12,25 @@ def importar_csv(caminho):
         list1.append(arqCSV[0][c].split(';'))
     return list1
 
+def dias_uteis_csv(lst, c=0):
+    day, month, year = map(int, lst[c][0].split('/'))
+    dataInicio = datetime.date(year, month, day)
+    return cal.get_working_days_delta(dataInicio, datetime.datetime.today())
+
 
 def dias_uteis(lst, c=0):
-    day, month, year = map(int, lst[c][0].split('/'))
+    if lst[c][1] == '':
+        return
+    elif '-AP-' in lst[c][0]:
+        return
+    else:
+        day, month, year = map(int, lst[c][1].split('/'))
+        dataInicio = datetime.date(year, month, day)
+        return cal.get_working_days_delta(dataInicio, datetime.datetime.today())
+
+
+def filtro_dias(date):
+    day, month, year = map(int, date.split('/'))
     dataInicio = datetime.date(year, month, day)
     return cal.get_working_days_delta(dataInicio, datetime.datetime.today())
 
